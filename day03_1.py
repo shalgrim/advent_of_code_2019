@@ -49,3 +49,4 @@ if __name__ == '__main__':
         lines = f.readlines()
 
     print(find_closest_intersection(lines[0], lines[1]))
+
