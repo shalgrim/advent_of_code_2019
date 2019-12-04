@@ -21,10 +21,10 @@ def is_valid_pw(num, ignore_range=False):
     return repeater
 
 
-def count_valid_pws(lo, hi):
+def count_valid_pws(lo, hi, algorithm=is_valid_pw):
     num_valid = 0
     for i in range(lo, hi+1):
-        if is_valid_pw(i):
+        if algorithm(i):
             num_valid += 1
 
     return num_valid
