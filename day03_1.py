@@ -9,19 +9,19 @@ def get_wire_points(wire):
 
         if direction == 'R':
             for _ in range(num_spaces):
-                current = (current[0]+1, current[1])
+                current = (current[0] + 1, current[1])
                 points.add(current)
         elif direction == 'L':
             for _ in range(num_spaces):
-                current = (current[0]-1, current[1])
+                current = (current[0] - 1, current[1])
                 points.add(current)
         elif direction == 'D':
             for _ in range(num_spaces):
-                current = (current[0], current[1]-1)
+                current = (current[0], current[1] - 1)
                 points.add(current)
         elif direction == 'U':
             for _ in range(num_spaces):
-                current = (current[0], current[1]+1)
+                current = (current[0], current[1] + 1)
                 points.add(current)
         else:
             raise Exception(f'What direction {direction}')
@@ -49,4 +49,3 @@ if __name__ == '__main__':
         lines = f.readlines()
 
     print(find_closest_intersection(lines[0], lines[1]))
-
