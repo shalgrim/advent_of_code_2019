@@ -93,4 +93,4 @@ if __name__ == '__main__':
     with open('data/input05.txt') as f:
         content = f.read()
     program_input = [int(x) for x in content.split(',')]
-    output = run_program(program_input)  # 223 is too low, 9431221 is correct
+    output = run_program(program_input)  # 9431221 is correct for github login input for part 1

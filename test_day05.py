@@ -16,7 +16,7 @@ class TestDay05(TestCase):
 
     # def test_run_program_part_1(self):
     #     """Only works if we mock out the input for opcode 3"""
-    #     with open('data/input05.txt') as f:
+    #     with open('data/input05_github_login.txt') as f:
     #         content = f.read()
     #     program_input = [int(x) for x in content.split(',')]
     #     the_outputs = run_program(program_input)
