@@ -31,19 +31,23 @@ def get_params(list_of_ints, instruction_pointer, opcode, param_modes):
 def process_instruction(opcode, params, output, instruction_pointer, the_outputs):
     if opcode == 1:
         output[params[2]] = params[0] + params[1]
-        instruction_pointer += 4
+        if params[2] != instruction_pointer:
+            instruction_pointer += 4
     elif opcode == 2:
         output[params[2]] = params[0] * params[1]
-        instruction_pointer += 4
+        if params[2] != instruction_pointer:
+            instruction_pointer += 4
     elif opcode == 3:
         in_param = input('need some input please: ')
         # in_param = 1  # for unit tests
         output[params[0]] = int(in_param)
-        instruction_pointer += 2
+        if params[0] != instruction_pointer:
+            instruction_pointer += 2
     elif opcode == 4:
         print(output[params[0]])
         the_outputs.append(output[params[0]])
-        instruction_pointer += 2
+        if params[0] != instruction_pointer:
+            instruction_pointer += 2
 
     return instruction_pointer
 
