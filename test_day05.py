@@ -21,3 +21,8 @@ class TestDay05(TestCase):
     #     program_input = [int(x) for x in content.split(',')]
     #     the_outputs = run_program(program_input)
     #     self.assertEqual(the_outputs[-1], 9431221)
+
+    # I have to learn how to mock out input
+    # def test_run_program_part_2(self):
+    #     the_outputs = run_program()
+

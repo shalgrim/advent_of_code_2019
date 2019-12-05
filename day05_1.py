@@ -14,7 +14,7 @@ def parse_instruction(instruction_int):
 
 def get_params(list_of_ints, instruction_pointer, opcode, param_modes):
     params = []
-    if opcode in (1, 2):  # two input params, one output param
+    if opcode in (1, 2, 7, 8):  # two input params, one output param
         for i in range(2):
             if param_modes[i] == 0:  # position
                 params.append(list_of_ints[list_of_ints[instruction_pointer + i + 1]])
@@ -24,6 +24,12 @@ def get_params(list_of_ints, instruction_pointer, opcode, param_modes):
         params.append(list_of_ints[instruction_pointer + 3])
     elif opcode in (3, 4):
         params.append(list_of_ints[instruction_pointer + 1])
+    elif opcode in (5, 6):  # jumps
+        for i in range(2):
+            if param_modes[i] == 0:  # position
+                params.append(list_of_ints[list_of_ints[instruction_pointer + i + 1]])
+            elif param_modes[i] == 1:  # immediate
+                params.append(list_of_ints[instruction_pointer + i + 1])
 
     return params
 
@@ -31,23 +37,39 @@ def get_params(list_of_ints, instruction_pointer, opcode, param_modes):
 def process_instruction(opcode, params, output, instruction_pointer, the_outputs):
     if opcode == 1:
         output[params[2]] = params[0] + params[1]
-        if params[2] != instruction_pointer:
-            instruction_pointer += 4
+        # if params[2] != instruction_pointer:
+        instruction_pointer += 4
     elif opcode == 2:
         output[params[2]] = params[0] * params[1]
-        if params[2] != instruction_pointer:
-            instruction_pointer += 4
+        # if params[2] != instruction_pointer:
+        instruction_pointer += 4
     elif opcode == 3:
         in_param = input('need some input please: ')
         # in_param = 1  # for unit tests
         output[params[0]] = int(in_param)
-        if params[0] != instruction_pointer:
-            instruction_pointer += 2
+        # if params[0] != instruction_pointer:
+        instruction_pointer += 2
     elif opcode == 4:
         print(output[params[0]])
         the_outputs.append(output[params[0]])
-        if params[0] != instruction_pointer:
-            instruction_pointer += 2
+        # if params[0] != instruction_pointer:
+        instruction_pointer += 2
+    elif opcode == 5:
+        if params[0] != 0:
+            instruction_pointer = params[1]
+        else:
+            instruction_pointer += 3
+    elif opcode == 6:
+        if params[0] == 0:
+            instruction_pointer = params[1]
+        else:
+            instruction_pointer += 3
+    elif opcode == 7:
+        output[params[2]] = 1 if params[0] < params[1] else 0
+        instruction_pointer += 4
+    elif opcode == 8:
+        output[params[2]] = 1 if params[0] == params[1] else 0
+        instruction_pointer += 4
 
     return instruction_pointer
 
