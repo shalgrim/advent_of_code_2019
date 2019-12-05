@@ -37,22 +37,17 @@ def get_params(list_of_ints, instruction_pointer, opcode, param_modes):
 def process_instruction(opcode, params, output, instruction_pointer, the_outputs):
     if opcode == 1:
         output[params[2]] = params[0] + params[1]
-        # if params[2] != instruction_pointer:
         instruction_pointer += 4
     elif opcode == 2:
         output[params[2]] = params[0] * params[1]
-        # if params[2] != instruction_pointer:
         instruction_pointer += 4
     elif opcode == 3:
         in_param = input('need some input please: ')
-        # in_param = 1  # for unit tests
         output[params[0]] = int(in_param)
-        # if params[0] != instruction_pointer:
         instruction_pointer += 2
     elif opcode == 4:
         print(output[params[0]])
         the_outputs.append(output[params[0]])
-        # if params[0] != instruction_pointer:
         instruction_pointer += 2
     elif opcode == 5:
         if params[0] != 0:
@@ -80,11 +75,12 @@ def run_program(list_of_ints):
     the_outputs = []
 
     while output[instruction_pointer] != 99:
-        # print(f'{instruction_pointer=}')
         instruction = output[instruction_pointer]
         opcode, param_modes = parse_instruction(instruction)
         params = get_params(output, instruction_pointer, opcode, param_modes)
-        instruction_pointer = process_instruction(opcode, params, output, instruction_pointer, the_outputs)
+        instruction_pointer = process_instruction(
+            opcode, params, output, instruction_pointer, the_outputs
+        )
 
     return the_outputs
 
@@ -93,4 +89,4 @@ if __name__ == '__main__':
     with open('data/input05.txt') as f:
         content = f.read()
     program_input = [int(x) for x in content.split(',')]
-    output = run_program(program_input)  # 9431221 is correct for github login input for part 1
+    output = run_program(program_input)

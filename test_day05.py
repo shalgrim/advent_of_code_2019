@@ -1,8 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-from day05_1 import (get_params, parse_instruction, process_instruction,
-                     run_program)
+from day05_1 import get_params, parse_instruction, process_instruction, run_program
 
 
 class TestDay05(TestCase):
@@ -19,13 +18,8 @@ class TestDay05(TestCase):
 
     @patch('builtins.input', lambda x: 1)
     def test_run_program_part_1(self):
-        """Only works if we mock out the input for opcode 3"""
         with open('data/input05_github_login.txt') as f:
             content = f.read()
         program_input = [int(x) for x in content.split(',')]
         the_outputs = run_program(program_input)
         self.assertEqual(the_outputs[-1], 9431221)
-
-    # I have to learn how to mock out input
-    # def test_run_program_part_2(self):
-    #     the_outputs = run_program()
