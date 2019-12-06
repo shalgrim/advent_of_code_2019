@@ -2,10 +2,7 @@ from collections import defaultdict
 
 
 def count_all_orbits(inlines):
-    direct_orbits = {}
-    for line in inlines:
-        orbited, orbiter = line.split(')')
-        direct_orbits[orbiter] = orbited
+    direct_orbits = get_direct_orbits(inlines)
 
     orbiter_counts = {}
     for orbiter in direct_orbits:
@@ -17,6 +14,14 @@ def count_all_orbits(inlines):
             orbiter_counts[orbiter] += 1
 
     return sum(list(orbiter_counts.values()))
+
+
+def get_direct_orbits(inlines):
+    direct_orbits = {}
+    for line in inlines:
+        orbited, orbiter = line.split(')')
+        direct_orbits[orbiter] = orbited
+    return direct_orbits
 
 
 if __name__ == '__main__':
