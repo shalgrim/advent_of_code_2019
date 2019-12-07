@@ -37,7 +37,6 @@ class Amplifier(object):
                 output_val = self.memory[params[0]]
                 self.instruction_pointer += 2
                 global_output_val = output_val
-                # print(output_val)
                 return output_val
             elif opcode == 5:
                 if params[0] != 0:
@@ -56,7 +55,7 @@ class Amplifier(object):
                 self.memory[params[2]] = 1 if params[0] == params[1] else 0
                 self.instruction_pointer += 4
 
-        return ('Done', global_output_val)
+        return 'Done', global_output_val
 
 
 def run_amplifier_series(instructions, phases):
