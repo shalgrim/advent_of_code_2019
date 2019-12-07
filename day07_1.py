@@ -1,3 +1,4 @@
+import itertools
 from copy import copy
 from day05_1 import parse_instruction, get_params
 
@@ -99,9 +100,17 @@ def run_program(instructions):
     return the_outputs
 
 
+def find_max_signal(instructions):
+    phases = [0, 1, 2, 3, 4]
+    signals = [run_all_amplifiers(instructions, list(perm)) for perm in itertools.permutations(phases)]
+    return max(signals)
+
+
 if __name__ == '__main__':
     with open('data/input07.txt') as f:
         content = f.read()
     program_instructions = [int(x) for x in content.split(',')]
-    final_output = run_all_amplifiers(program_instructions, [4, 3, 2, 1, 0])
-    print(final_output)
+    # final_output = run_all_amplifiers(program_instructions, [4, 3, 2, 1, 0])
+    # print(final_output)
+    max_signal = find_max_signal(program_instructions)
+    print(max_signal)
