@@ -1,4 +1,4 @@
-INPUT_FN = 'data/input01.txt'
+from day01_1 import INPUT_FN
 
 
 def calc_fuel(mass):
@@ -12,10 +12,8 @@ def calc_fuel(mass):
 
 
 if __name__ == '__main__':
-
     with open(INPUT_FN) as f:
-        lines = f.readlines()
+        masses = [int(line.strip()) for line in f.readlines()]
 
-    masses = [int(line.strip()) for line in lines]
     fuel = [calc_fuel(mass) for mass in masses]
-    print(sum(fuel))  # 5,264,925 is too low
+    print(sum(fuel))
