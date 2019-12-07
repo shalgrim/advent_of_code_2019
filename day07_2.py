@@ -56,7 +56,6 @@ class Amplifier(object):
                 self.memory[params[2]] = 1 if params[0] == params[1] else 0
                 self.instruction_pointer += 4
 
-        # print(f'REACHED OPCODE 99 with val {global_output_val}!')
         return ('Done', global_output_val)
 
 
