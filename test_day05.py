@@ -2,6 +2,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from day05_1 import get_params, parse_instruction, process_instruction, run_program
+from day09_1 import run_program as rp9
 
 
 class TestDay05(TestCase):
@@ -22,4 +23,12 @@ class TestDay05(TestCase):
             content = f.read()
         program_input = [int(x) for x in content.split(',')]
         the_outputs = run_program(program_input)
+        self.assertEqual(the_outputs[-1], 9431221)
+
+    @patch('builtins.input', lambda x: 1)
+    def test_backward_compat(self):
+        with open('data/input05_github_login.txt') as f:
+            content = f.read()
+        program_input = [int(x) for x in content.split(',')]
+        the_outputs = rp9(program_input)[1]
         self.assertEqual(the_outputs[-1], 9431221)
