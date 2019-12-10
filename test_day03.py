@@ -6,15 +6,10 @@ from day03_2 import find_least_distance_intersection
 
 class TestDay03(TestCase):
     def test_find_closest_intersection(self):
-        self.assertEqual(find_closest_intersection(
-            'R8,U5,L5,D3',
-            'U7,R6,D4,L4',
-        ),
-            6)
+        self.assertEqual(find_closest_intersection('R8,U5,L5,D3', 'U7,R6,D4,L4',), 6)
         self.assertEqual(
             find_closest_intersection(
-                'R75,D30,R83,U83,L12,D49,R71,U7,L72',
-                'U62,R66,U55,R34,D71,R55,D58,R83',
+                'R75,D30,R83,U83,L12,D49,R71,U7,L72', 'U62,R66,U55,R34,D71,R55,D58,R83',
             ),
             159,
         )
@@ -28,16 +23,11 @@ class TestDay03(TestCase):
 
     def test_find_least_distance_intersection(self):
         self.assertEqual(
-            find_least_distance_intersection(
-                'R8,U5,L5,D3',
-                'U7,R6,D4,L4',
-            ),
-            30
+            find_least_distance_intersection('R8,U5,L5,D3', 'U7,R6,D4,L4',), 30
         )
         self.assertEqual(
             find_least_distance_intersection(
-                'R75,D30,R83,U83,L12,D49,R71,U7,L72',
-                'U62,R66,U55,R34,D71,R55,D58,R83',
+                'R75,D30,R83,U83,L12,D49,R71,U7,L72', 'U62,R66,U55,R34,D71,R55,D58,R83',
             ),
             610,
         )
