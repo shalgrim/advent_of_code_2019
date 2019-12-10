@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from day10_1 import find_best_asteroid
+from day10_2 import get_vaporization_list
 
 
 class TestDay10(TestCase):
@@ -75,3 +76,39 @@ class TestDay10(TestCase):
             '###.##.####.##.#..##',
         ]
         self.assertEqual(find_best_asteroid(lines), ((11, 13), 210))
+
+    def test_get_vaporization_list(self):
+        lines = [
+            '.#..##.###...#######',
+            '##.############..##.',
+            '.#.######.########.#',
+            '.###.#######.####.#.',
+            '#####.##.#.##.###.##',
+            '..#####..#.#########',
+            '####################',
+            '#.####....###.#.#.##',
+            '##.#################',
+            '#####.##.###..####..',
+            '..######..##.#######',
+            '####.##.####...##..#',
+            '.#####..#.######.###',
+            '##...#.##########...',
+            '#.##########.#######',
+            '.####.#.###.###.#.##',
+            '....##.##.###..#####',
+            '.#.#.###########.###',
+            '#.#.#.#####.####.###',
+            '###.##.####.##.#..##',
+        ]
+        vl = get_vaporization_list(lines)
+        # self.assertEqual(vl[0], (11, 12))
+        self.assertEqual(vl[:3], [(11, 12), (12, 1), (12, 2)])
+        self.assertEqual(vl[9], (12, 8))
+        self.assertEqual(vl[19], (16, 0))
+        self.assertEqual(vl[49], (16, 9))
+        self.assertEqual(vl[99], (10, 16))
+        self.assertEqual(vl[198], (9, 6))
+        self.assertEqual(vl[199], (8, 2))
+        self.assertEqual(vl[200], (10, 9))
+        self.assertEqual(vl[298], (11, 1))
+        self.assertEqual(len(vl), 299)

@@ -55,17 +55,22 @@ def get_visible_asteroids(a, asteroids):
 
 
 def find_best_asteroid(lines):
-    asteroids = set()
-    for y, line in enumerate(lines):
-        for x, c in enumerate(line):
-            if c == '#':
-                asteroids.add((x, y))
+    asteroids = map_asteroids(lines)
     those_visible = {}
     for a in asteroids:
         those_visible[a] = get_visible_asteroids(a, asteroids)
 
     sorted_asteroids = sorted([(c, len(v)) for c, v in those_visible.items()], key=lambda t: t[1], reverse=True)
     return sorted_asteroids[0]
+
+
+def map_asteroids(lines):
+    asteroids = set()
+    for y, line in enumerate(lines):
+        for x, c in enumerate(line):
+            if c == '#':
+                asteroids.add((x, y))
+    return asteroids
 
 
 if __name__ == '__main__':
