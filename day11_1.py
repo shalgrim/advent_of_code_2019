@@ -155,4 +155,4 @@ if __name__ == '__main__':
         content = f.read()
     program_instructions = [int(x) for x in content.split(',')]
     run_program(program_instructions)
-    print(len(points_visited))  # 249 is incorrect
+    print(len(points_visited))
