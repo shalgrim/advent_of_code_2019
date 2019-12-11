@@ -1,5 +1,8 @@
 from unittest import TestCase
+
+from day02_1 import main as main_part1
 from day02_1 import run_program
+from day02_2 import main as main_part2
 from day09_1 import run_program as rp9
 
 
@@ -27,3 +30,9 @@ class TestDay02(TestCase):
         self.assertEqual(
             rp9([1, 1, 1, 4, 99, 5, 6, 0, 99])[0], [30, 1, 1, 4, 2, 5, 6, 0, 99]
         )
+
+    def test_part_1(self):
+        self.assertEqual(main_part1(), 3850704)
+
+    def test_part_2(self):
+        self.assertEqual(main_part2(), 6718)

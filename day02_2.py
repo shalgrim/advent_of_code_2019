@@ -1,8 +1,7 @@
-import sys
-
 from day02_1 import run_program
 
-if __name__ == '__main__':
+
+def main():
     with open('data/input02.txt') as f:
         content = f.read()
     program_input = [int(x) for x in content.split(',')]
@@ -15,5 +14,8 @@ if __name__ == '__main__':
             if output[0] == 19690720:
                 print(f'{noun=}')
                 print(f'{verb=}')
-                print(100 * noun + verb)
-                sys.exit()
+                return 100 * noun + verb
+
+
+if __name__ == '__main__':
+    print(main())

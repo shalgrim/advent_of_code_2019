@@ -1,24 +1,34 @@
 from copy import copy
 
 
-def run_program(list_of_ints):
-    output = copy(list_of_ints)
-    reading = 0
+def run_program(instructions):
+    memory = copy(instructions)
+    instruction_pointer = 0
 
-    while output[reading] != 99:
-        if output[reading] == 1:
-            output[output[reading+3]] = output[output[reading+1]] + output[output[reading+2]]
-        elif output[reading] == 2:
-            output[output[reading+3]] = output[output[reading+1]] * output[output[reading+2]]
-        reading += 4
-    return output
+    while memory[instruction_pointer] != 99:
+        if memory[instruction_pointer] == 1:
+            memory[memory[instruction_pointer + 3]] = (
+                memory[memory[instruction_pointer + 1]]
+                + memory[memory[instruction_pointer + 2]]
+            )
+        elif memory[instruction_pointer] == 2:
+            memory[memory[instruction_pointer + 3]] = (
+                memory[memory[instruction_pointer + 1]]
+                * memory[memory[instruction_pointer + 2]]
+            )
+        instruction_pointer += 4
+    return memory
 
 
-if __name__ == '__main__':
+def main():
     with open('data/input02.txt') as f:
         content = f.read()
     program_input = [int(x) for x in content.split(',')]
     program_input[1] = 12
     program_input[2] = 2
-    output = run_program(program_input)
-    print(output[0])
+    memory = run_program(program_input)
+    return memory[0]
+
+
+if __name__ == '__main__':
+    print(main())  # 3850704
