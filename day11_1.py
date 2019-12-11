@@ -129,7 +129,7 @@ def process_instruction(
 
 def run_program(instructions):
     relative_base = 0
-    memory = copy(instructions)  # + ([0] * 2000000)  # doesn't seem to help
+    memory = copy(instructions)
     instruction_pointer = 0
     the_outputs = []
 
