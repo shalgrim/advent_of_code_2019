@@ -73,3 +73,6 @@ if __name__ == '__main__':
         lines = [line.strip() for line in f.readlines()]
 
     vl = get_vaporization_list(lines)
+    print(vl[199])
+    x, y = vl[199]
+    print(x*100 + y)
