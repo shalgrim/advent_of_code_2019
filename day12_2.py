@@ -1,6 +1,21 @@
+import logging
+from datetime import datetime
+from collections import Counter
+
 from day12_1 import run_time
 from moon import Moon
-from datetime import datetime
+
+# import sys
+# from logging import StreamHandler
+
+logger = logging.getLogger('advent_of_code_2019.day12_2')
+logging.basicConfig(
+    filename='day12_2.log',
+    level=logging.INFO,
+    format='%(levelname) -10s %(asctime)s %(module)s at line %(lineno)d: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+)
+# logger.addHandler(StreamHandler(sys.stdout))
 
 
 def convert_moons_to_states(moons):
@@ -18,6 +33,7 @@ def main(moons):
     print(datetime.now(), 0)
 
     while state not in states:
+        logger.info(f'{state=}, {steps=}')
         states.add(state)
         moons = run_time(moons, 1)
         steps += 1
