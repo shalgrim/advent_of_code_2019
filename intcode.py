@@ -20,7 +20,7 @@ class Intcode(object):
 
     def get_params(self, opcode, param_modes):
         params = []
-        if opcode in (1, 2, 7, 8):  # two input params, one output param
+        if opcode in (1, 2, 5, 6, 7, 8):  # two input params, one output param
             for i in range(2):
                 if param_modes[i] == 0:  # position
                     params.append(
@@ -32,14 +32,6 @@ class Intcode(object):
             params.append(self.memory[self.instruction_pointer + 3])
         elif opcode in (3, 4):
             params.append(self.memory[self.instruction_pointer + 1])
-        elif opcode in (5, 6):  # jumps
-            for i in range(2):
-                if param_modes[i] == 0:  # position
-                    params.append(
-                        self.memory[self.memory[self.instruction_pointer + i + 1]]
-                    )
-                elif param_modes[i] == 1:  # immediate
-                    params.append(self.memory[self.instruction_pointer + i + 1])
 
         return params
 
