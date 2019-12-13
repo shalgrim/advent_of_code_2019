@@ -1,6 +1,8 @@
 from unittest import TestCase
 
-from day12_1 import main as main_part_1, run_time, total_energy
+from day12_1 import main as main_part_1
+from day12_1 import run_time, total_energy
+from day12_2 import get_cycle_times, get_prime_factorization, find_smallest_prime, least_common_multiple
 from day12_2 import main as main_part_2
 from moon import Moon
 
@@ -62,6 +64,35 @@ class TestDay12(TestCase):
             Moon(-19, 7, 8),
         ]
         self.assertEqual(main_part_1(moons), 8538)
+
+    def test_get_cycle_times(self):
+        moons = [
+            Moon(-9, 10, -1),
+            Moon(-14, -8, 14),
+            Moon(1, 5, 6),
+            Moon(-19, 7, 8),
+        ]
+        self.assertEqual(get_cycle_times(moons), [161428, 231614, 108344])
+
+    def test_smallest_prime(self):
+        self.assertEqual(find_smallest_prime(2), 2)
+        self.assertEqual(find_smallest_prime(3), 3)
+        self.assertEqual(find_smallest_prime(4), 2)
+        self.assertEqual(find_smallest_prime(5), 5)
+        self.assertEqual(find_smallest_prime(6), 2)
+        self.assertEqual(find_smallest_prime(9), 3)
+
+    def test_get_prime_factorization(self):
+        self.assertListEqual(get_prime_factorization(2), [2])
+        self.assertListEqual(get_prime_factorization(3), [3])
+        self.assertListEqual(get_prime_factorization(4), [2, 2])
+        self.assertListEqual(get_prime_factorization(5), [5])
+        self.assertListEqual(get_prime_factorization(6), [2, 3])
+        self.assertListEqual(get_prime_factorization(9), [3, 3])
+
+    def test_lcm(self):
+        self.assertEqual(least_common_multiple([6, 9, 15]), 90)
+        self.assertEqual(least_common_multiple([161428, 231614, 108344]), 506359021038056)
 
     def test_main_2(self):
         self.assertEqual(main_part_2(self.moons), 2772)
