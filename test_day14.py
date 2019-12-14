@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from day14_1 import Rule, main, get_required, does_produce
+from day14_2 import main as main2
 
 
 class TestDay14(TestCase):
@@ -99,3 +100,14 @@ class TestDay14(TestCase):
         with open('data/test14_5.txt') as f:
             lines = [line.strip() for line in f.readlines()]
         self.assertEqual(main(lines), 2210736)
+
+    def test_main_part_2(self):
+        # with open('data/test14_3.txt') as f:
+        #     lines = [line.strip() for line in f.readlines()]
+        # self.assertEqual(main2(lines, 13312), 82892753)
+        # with open('data/test14_4.txt') as f:
+        #     lines = [line.strip() for line in f.readlines()]
+        # self.assertEqual(main2(lines, 180697), 5586022)
+        with open('data/test14_5.txt') as f:
+            lines = [line.strip() for line in f.readlines()]
+        self.assertEqual(main2(lines, 2210736), 460664)  # returned 460663 =(
