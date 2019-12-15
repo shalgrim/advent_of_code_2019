@@ -46,7 +46,13 @@ def get_next_move():
             return i + 1  # in_param
 
     # go back the way we came
-    attempted_location = current_path[-2]
+    try:
+        attempted_location = current_path[-2]
+    except IndexError:
+        print('we seem to be done')
+        render_map()
+        return -1
+
     answer = [north, south, east, west].index(attempted_location) + 1
     current_path.pop()
     return answer
@@ -96,6 +102,8 @@ def process_instruction(
         )
     elif opcode == 3:
         in_param = get_next_move()
+        if in_param == -1:
+            return output.index(99), None
         if param_modes[0] == 2:
             try:
                 output[params[0] + relative_base] = in_param
@@ -115,7 +123,7 @@ def process_instruction(
             raise Exception('what mode?')
         process_out_param(out_param)
         instruction_pointer += 2
-        render_map()
+        # render_map()
     else:
         raise Exception(f'what {opcode=}')
 
