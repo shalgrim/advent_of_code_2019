@@ -64,4 +64,4 @@ class TestDay14(TestCase):
         # self.assertEqual(main2(lines, 180697), 5586022)
         with open('data/test14_5.txt') as f:
             lines = [line.strip() for line in f.readlines()]
-        self.assertEqual(main2(lines, 2210736), 460664)  # returned 460663 =(
+        self.assertEqual(main2(lines), 460664)  # returned 460663 =(
