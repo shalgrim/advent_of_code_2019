@@ -20,7 +20,7 @@ def get_modified_pattern(base_pattern, digit_index, len_needed):
 
 
 def apply_fft(in_number, num_phases):
-    in_list = [int(c) for c in str(in_number)]
+    in_list = [int(c) for c in in_number]
     working_list = copy(in_list)
 
     for _ in range(num_phases):
@@ -38,16 +38,16 @@ def apply_fft(in_number, num_phases):
 
         working_list = temp_list
 
-    return int(''.join([str(d) for d in working_list]))
+    return ''.join([str(d) for d in working_list])
 
 
 def main(in_number, num_phases, num_digits):
     big_number = apply_fft(in_number, num_phases)
-    return int(''.join(str(big_number)[:num_digits]))
+    return big_number[:num_digits]
 
 
 if __name__ == '__main__':
     with open('data/input16.txt') as f:
         content = f.read().strip()
 
-    print(main(int(content), 100, 8))
+    print(main(content, 100, 8))
