@@ -1,6 +1,6 @@
 from day14_1 import Rule
 
-resources = {'ORE' : 1_000_000_000_000}
+resources = {'ORE': 1_000_000_000_000}
 
 
 def find_missing_ingredient(rule):
@@ -30,8 +30,6 @@ def produce_max_fuel(output_ingredient, rules, ore_requirement):
 
             if output_ingredient != 'FUEL':
                 return
-            # elif resources['FUEL'] % 100 == 0:
-            #     print(f'{resources["FUEL"]=}')
 
 
 def main(lines, ore_requirement):

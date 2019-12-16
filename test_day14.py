@@ -38,52 +38,6 @@ class TestDay14(TestCase):
         self.assertTrue(does_produce('B', 'E', rules))
         self.assertTrue(does_produce('B', 'FUEL', rules))
 
-    # def test_get_required(self):
-    #     with open('data/test14_1.txt') as f:
-    #         lines = [line.strip() for line in f.readlines()]
-    #     rules = [Rule(line) for line in lines]
-    #     rules = {rule.output: rule for rule in rules}
-    #
-    #     # get tests to pass in this order
-    #     self.assertEqual(get_required('E', 'FUEL', 1, rules), 1)
-    #     self.assertEqual(get_required('D', 'E', 1, rules), 1)
-    #     self.assertEqual(get_required('C', 'D', 1, rules), 1)
-    #     self.assertEqual(get_required('B', 'C', 1, rules), 1)
-    #     self.assertEqual(get_required('B', 'D', 1, rules), 1)
-    #     self.assertEqual(get_required('C', 'E', 1, rules), 1)
-    #     self.assertEqual(get_required('B', 'E', 1, rules), 1)
-    #     self.assertEqual(get_required('D', 'FUEL', 1, rules), 1)
-    #     self.assertEqual(get_required('C', 'FUEL', 1, rules), 1)
-    #     self.assertEqual(get_required('B', 'FUEL', 1, rules), 1)
-    #     self.assertEqual(get_required('ORE', 'B', 1, rules), 1)
-    #     self.assertEqual(get_required('ORE', 'A', 1, rules), 10)
-    #     self.assertEqual(get_required('ORE', 'A', 10, rules), 10)
-    #     self.assertEqual(get_required('ORE', 'A', 11, rules), 20)
-    #     self.assertEqual(get_required('ORE', 'C', 1, rules), 11)
-    #     self.assertEqual(get_required('ORE', 'D', 1, rules), 21)
-    #     self.assertEqual(get_required('ORE', 'E', 1, rules), 31)
-    #     self.assertEqual(get_required('A', 'FUEL', 1, rules), 28)
-    #     self.assertEqual(get_required('ORE', 'FUEL', 1, rules), 31)
-    #
-    #     # should be good if I can get above to pass
-    #     # self.assertEqual(get_required('E', 'FUEL', 1, rules), 1)
-    #     # self.assertEqual(get_required('ORE', 'A', 10, rules), 10)
-    #     # self.assertEqual(get_required('ORE', 'B', 1, rules), 1)
-    #     # self.assertEqual(get_required('ORE', 'C', 1, rules), 11)
-    #     # self.assertEqual(get_required('A', 'C', 1, rules), 7)
-    #     # self.assertEqual(get_required('ORE', 'D', 1, rules), 21)
-    #     # self.assertEqual(get_required('A', 'D', 1, rules), 14)
-    #     # self.assertEqual(get_required('A', 'FUEL', 1, rules), 28)
-    #     # self.assertEqual(get_required('ORE', 'A', 7, rules), 10)
-    #     # self.assertEqual(get_required('ORE', 'A', 14, rules), 20)
-    #     # self.assertEqual(get_required('ORE', 'A', 21, rules), 30)
-    #     # self.assertEqual(get_required('ORE', 'A', 28, rules), 30)
-    #     # self.assertEqual(get_required('A', 'C', 1, rules), 7)
-    #     # self.assertEqual(get_required('A', 'D', 1, rules), 14)
-    #     # self.assertEqual(get_required('A', 'E', 1, rules), 21)
-    #     # self.assertEqual(get_required('ORE', 'E', 1, rules), 31)
-    #     # self.assertEqual(get_required('ORE', 'FUEL', 1, rules), 31)
-
     def test_main_part_1(self):
         with open('data/test14_1.txt') as f:
             lines = [line.strip() for line in f.readlines()]
