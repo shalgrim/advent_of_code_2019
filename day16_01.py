@@ -23,7 +23,8 @@ def apply_fft(in_number, num_phases):
     in_list = [int(c) for c in in_number]
     working_list = copy(in_list)
 
-    for _ in range(num_phases):
+    for i in range(num_phases):
+        print(i)
         temp_list = []
 
         for j in range(1, len(working_list) + 1):
