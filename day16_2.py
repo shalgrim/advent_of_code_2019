@@ -1,4 +1,4 @@
-from day16_01 import apply_fft
+from day16_1 import apply_fft
 
 
 def main(in_number, num_phases, num_digits):
