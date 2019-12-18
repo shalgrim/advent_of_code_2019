@@ -43,7 +43,13 @@ class TestMap(TestCase):
 
     def test_reachable(self):
         self.assertEqual(self.map1_0.reachable(), set([(4, 1), (5, 1), (6, 1), (7, 1)]))
-        self.assertEqual(self.map2_2.reachable(), self.maps2_2_reachables)
+        maps2_2_reachables = set()
+        for x in range(10, 23):
+            maps2_2_reachables.add((x, 1))
+        maps2_2_reachables.add((22, 2))
+        for x in range(1, 23):
+            maps2_2_reachables.add((x, 3))
+        self.assertEqual(self.map2_2.reachable(), maps2_2_reachables)
 
 
 @unittest.skip('later')
