@@ -51,6 +51,14 @@ class TestMap(TestCase):
             maps2_2_reachables.add((x, 3))
         self.assertEqual(self.map2_2.reachable(), maps2_2_reachables)
 
+    def test_reachable_keys(self):
+        self.assertEqual(self.map1_0.reachable_keys, {'a': (7, 1)})
+        self.assertEqual(self.map2_2.reachable_keys, {'c': (21, 1), 'd': (1, 3)})
+
+    def test_reachable_doors(self):
+        self.assertEqual(self.map1_0.reachable_doors, {'A': set([(4, 1)])})
+        self.assertEqual(self.map2_2.reachable_doors, {'C': set([(10, 1)])})
+
 
 @unittest.skip('later')
 class TestDay18(TestCase):

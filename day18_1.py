@@ -1,9 +1,13 @@
+from collections import defaultdict
+
+
 class Map(object):
     def __init__(self, lines):
         self.height = len(lines)
         self.width = len(lines[0])
         self.keys = {}
         self.doors = {}
+        self.door_adjacent = defaultdict(set)
         self.walls = set()
         self.passages = set()
 
@@ -21,6 +25,15 @@ class Map(object):
                     self.keys[c] = loc
                 elif ord('A') <= ord(c) <= ord('Z'):
                     self.doors[c] = loc
+                    self.door_adjacent[c].add((loc[0]-1, loc[1]))
+                    self.door_adjacent[c].add((loc[0]+1, loc[1]))
+                    self.door_adjacent[c].add((loc[0], loc[1]-1))
+                    self.door_adjacent[c].add((loc[0], loc[1]+1))
+                    # keep changing my mind on how I want to do it
+                    # self.door_adjacent[(loc[0]-1, loc[1])].add(c)
+                    # self.door_adjacent[(loc[0]+1, loc[1])].add(c)
+                    # self.door_adjacent[(loc[0], loc[1]-1)].add(c)
+                    # self.door_adjacent[(loc[0], loc[1]+1)].add(c)
 
     def reachable(self):
         """do a depth-first walking search"""
@@ -43,6 +56,20 @@ class Map(object):
                 self._reachable(direction, reachable)
 
         return reachable
+
+    @property
+    def reachable_keys(self, reachables=None):
+        if reachables is None:
+            reachables = self.reachable()
+
+        return {k: v for k, v in self.keys.items() if v in reachables}
+
+    @property
+    def reachable_doors(self, reachables=None):
+        if reachables is None:
+            reachables = self.reachable()
+
+        return {k: v.intersection(reachables) for k, v in self.door_adjacent.items() if v.intersection(reachables)}
 
 
 def calc_fewest_steps_to_all_keys(lines):
