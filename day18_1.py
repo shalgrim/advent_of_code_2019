@@ -25,10 +25,10 @@ class Map(object):
                     self.keys[c] = loc
                 elif ord('A') <= ord(c) <= ord('Z'):
                     self.doors[c] = loc
-                    self.door_adjacent[c].add((loc[0]-1, loc[1]))
-                    self.door_adjacent[c].add((loc[0]+1, loc[1]))
-                    self.door_adjacent[c].add((loc[0], loc[1]-1))
-                    self.door_adjacent[c].add((loc[0], loc[1]+1))
+                    self.door_adjacent[c].add((loc[0] - 1, loc[1]))
+                    self.door_adjacent[c].add((loc[0] + 1, loc[1]))
+                    self.door_adjacent[c].add((loc[0], loc[1] - 1))
+                    self.door_adjacent[c].add((loc[0], loc[1] + 1))
                     # keep changing my mind on how I want to do it
                     # self.door_adjacent[(loc[0]-1, loc[1])].add(c)
                     # self.door_adjacent[(loc[0]+1, loc[1])].add(c)
@@ -37,10 +37,10 @@ class Map(object):
 
     def reachable(self):
         """do a depth-first walking search"""
-        reachable = set([self.me])  # TODO: turn into a dict where I track distance
-        return self._reachable(self.me, reachable)
+        reachable = {self.me: 0}
+        return self._reachable(self.me, reachable, 1)
 
-    def _reachable(self, scout, reachable):
+    def _reachable(self, scout, reachable, distance):
         north = scout[0], scout[1] - 1
         south = scout[0], scout[1] + 1
         east = scout[0] + 1, scout[1]
@@ -49,11 +49,14 @@ class Map(object):
         unreachables = self.walls.union(set(list(self.doors.values())))
 
         for direction in directions:
-            if direction in reachable or direction in unreachables:
+            if direction in unreachables:
                 continue
             else:
-                reachable.add(direction)
-                self._reachable(direction, reachable)
+                reachable[direction] = (
+                    distance
+                    if direction not in reachable
+                    else min(reachable[direction], distance)
+                )
 
         return reachable
 
@@ -62,14 +65,21 @@ class Map(object):
         if reachables is None:
             reachables = self.reachable()
 
-        return {k: v for k, v in self.keys.items() if v in reachables}
+        return {k: v for k, v in self.keys.items() if v in reachables.keys()}
 
     @property
     def reachable_doors(self, reachables=None):
         if reachables is None:
             reachables = self.reachable()
 
-        return {k: v.intersection(reachables) for k, v in self.door_adjacent.items() if v.intersection(reachables)}
+        return {
+            k: v.intersection(reachables.keys())
+            for k, v in self.door_adjacent.items()
+            if v.intersection(reachables.keys())
+        }
+
+    def reachable_unlockable_doors(self, reachables=None):
+        raise NotImplementedError
 
 
 def calc_fewest_steps_to_all_keys(lines):
