@@ -2,44 +2,14 @@ from copy import copy
 from day05_1 import parse_instruction
 from day09_1 import get_params, special_assign
 
-
-the_output = {}
-exploring_x = 49
-exploring_y = -1
 provided_x = False
 
 
-def run_program(instructions):
-    global provided_x
-    provided_x = False
-    relative_base = 0
-    memory = copy(instructions)
-    instruction_pointer = 0
-    the_outputs = []
-
-    while memory[instruction_pointer] != 99:
-        instruction = memory[instruction_pointer]
-        opcode, param_modes = parse_instruction(instruction)
-        params = get_params(
-            memory, instruction_pointer, opcode, param_modes, relative_base
-        )
-        instruction_pointer, relative_base = process_instruction(
-            opcode,
-            params,
-            memory,
-            instruction_pointer,
-            the_outputs,
-            param_modes,
-            relative_base,
-        )
-    # print(f'completed point {exploring_x}, {exploring_y}')
-
-
 def process_instruction(
-        opcode, params, output, instruction_pointer, the_outputs, param_modes, relative_base
+        opcode, params, output, instruction_pointer, the_inputs, param_modes, relative_base
 ):
-    global the_output, exploring_x, exploring_y, provided_x
-
+    """Note I messed with the arguments in this version"""
+    global provided_x
     if opcode == 1:
         try:
             output[params[2]] = params[0] + params[1]
@@ -54,10 +24,10 @@ def process_instruction(
         instruction_pointer += 4
     elif opcode == 3:
         if provided_x:
-            in_param = exploring_y
+            in_param = the_inputs[1]
             provided_x = False
         else:
-            in_param = exploring_x
+            in_param = the_inputs[0]
             provided_x = True
         if param_modes[0] == 2:
             try:
@@ -76,7 +46,7 @@ def process_instruction(
             out_param = output[params[0] + relative_base]
         else:
             raise Exception('what mode?')
-        the_output[(exploring_x, exploring_y)] = out_param
+        return -1, out_param
         instruction_pointer += 2
     elif opcode == 5:
         if params[0] != 0:
@@ -111,16 +81,68 @@ def process_instruction(
     return instruction_pointer, relative_base
 
 
+def run_program(instructions, x, y):
+    print(f'running run_program {x=}, {y=}')
+    global provided_x
+    provided_x = False
+    relative_base = 0
+    memory = copy(instructions)
+    instruction_pointer = 0
+
+    while memory[instruction_pointer] != 99 and instruction_pointer >= 0:
+        instruction = memory[instruction_pointer]
+        opcode, param_modes = parse_instruction(instruction)
+        params = get_params(
+            memory, instruction_pointer, opcode, param_modes, relative_base
+        )
+        instruction_pointer, relative_base = process_instruction(
+            opcode,
+            params,
+            memory,
+            instruction_pointer,
+            (x, y),
+            param_modes,
+            relative_base,
+        )
+
+    assert instruction_pointer == -1
+    print(f'returning {relative_base=}')
+    return relative_base  # i store it here in this output opcode 4 instruction processing
+
+
+def calc_beam_width_and_start(program_instructions, y):
+    print(f'running calc_beam_width_and_start with {y=}')
+    program_output = 0
+    x = -1
+
+    while not program_output and x < 200:
+        x += 1
+        program_output = run_program(program_instructions, x, y)
+
+    beam_start = x  # never get here if y == 1 or y == 2
+
+    while program_output:
+        x += 1
+        program_output = run_program(program_instructions, x, y)
+
+    beam_width = x - beam_start
+
+    return beam_width, beam_start
+
+
 def main(program_instructions):
-    global exploring_x, exploring_y
-    for exploring_y in range(50):
-        for exploring_x in range(50):
-            run_program(program_instructions)
+    beam_width = 0
+    y = 1
+    while beam_width < 1000:
+        y += 1
+        beam_width, beam_start = calc_beam_width_and_start(program_instructions, y)
+        print(f'{y=}, {beam_start=}, {beam_width=}')
+
+    return beam_start, y
 
 
 if __name__ == '__main__':
     with open('data/input19.txt') as f:
         content = f.read()
     program_instructions = [int(x) for x in content.split(',')]
-    main(program_instructions)
-    print(sum(the_output.values()))  # 160 is the right answer
+    print(main(program_instructions))
