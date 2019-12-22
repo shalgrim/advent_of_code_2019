@@ -9,6 +9,18 @@ exploring_y = -1
 provided_x = False
 
 
+def print_map():
+    global the_output
+    lines = []
+    for y in range(50):
+        intline = [the_output[(x, y)] for x in range(50)]
+        charline = ['#' if il == 1 else '.' for il in intline]
+        lines.append(''.join(charline))
+
+    for line in lines:
+        print(line)
+
+
 def run_program(instructions):
     global provided_x
     provided_x = False
@@ -123,4 +135,5 @@ if __name__ == '__main__':
         content = f.read()
     program_instructions = [int(x) for x in content.split(',')]
     main(program_instructions)
+    print_map()  # don't consistently get a beam until y == 7
     print(sum(the_output.values()))  # 160 is the right answer

@@ -82,7 +82,7 @@ def process_instruction(
 
 
 def run_program(instructions, x, y):
-    print(f'running run_program {x=}, {y=}')
+    # print(f'running run_program {x=}, {y=}')
     global provided_x
     provided_x = False
     relative_base = 0
@@ -106,12 +106,12 @@ def run_program(instructions, x, y):
         )
 
     assert instruction_pointer == -1
-    print(f'returning {relative_base=}')
+    # print(f'returning {relative_base=}')
     return relative_base  # i store it here in this output opcode 4 instruction processing
 
 
 def calc_beam_width_and_start(program_instructions, y):
-    print(f'running calc_beam_width_and_start with {y=}')
+    # print(f'running calc_beam_width_and_start with {y=}')
     program_output = 0
     x = -1
 
@@ -132,7 +132,7 @@ def calc_beam_width_and_start(program_instructions, y):
 
 def main(program_instructions):
     beam_width = 0
-    y = 1
+    y = 200  # I get to a max beam_width of 38 at y == 292 and then it's straight back to zeroes
     while beam_width < 1000:
         y += 1
         beam_width, beam_start = calc_beam_width_and_start(program_instructions, y)
