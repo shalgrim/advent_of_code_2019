@@ -24,9 +24,12 @@ def process_instruction(instruction, deck):
 
 
 def shuffle(instructions, deck_size):
+    print('about to build deck')
     deck = [i for i in range(deck_size)]
+    print('built deck')
 
     for instruction in instructions:
+        print(f'{instruction=}')
         deck = process_instruction(instruction, deck)
 
     return deck
