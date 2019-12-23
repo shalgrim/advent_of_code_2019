@@ -1,6 +1,17 @@
-import math
+import logging
+import sys
 from collections import defaultdict
 from copy import deepcopy
+from logging import StreamHandler
+
+logger = logging.getLogger('advent_of_code_2019.day18_1')
+logging.basicConfig(
+    filename='day18_1.log',
+    level=logging.INFO,
+    format='%(levelname) -10s %(asctime)s %(module)s at line %(lineno)d: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+)
+logger.addHandler(StreamHandler(sys.stdout))
 
 
 known_shortest = None
@@ -132,7 +143,7 @@ class Map(object):
             self.pick_up_key()
         elif self.me in self.doors.values():
             self.unlock_door()
-        print(f'{len(self.keys)=}, {len(self.doors)=}')
+        logger.info(f'{len(self.keys)=}, {len(self.doors)=}')
 
 
 def calc_fewest_steps_to_all_keys(old_map, cumulative_distance=0):
@@ -142,21 +153,21 @@ def calc_fewest_steps_to_all_keys(old_map, cumulative_distance=0):
     # print(f'{cumulative_distance=}')
 
     if old_map.got_all_keys:
-        print(f'found path of {cumulative_distance}')
+        logger.info(f'found path of {cumulative_distance}')
 
         if not known_shortest or known_shortest > cumulative_distance:
             known_shortest = cumulative_distance
-            print(f'new {known_shortest=}')
+            logger.info(f'new {known_shortest=}')
 
         return 0
 
     if old_map.state in known_state_distances:
-        full_path_length = cumulative_distance+known_state_distances[old_map.state]
-        print(f'found path of {full_path_length}')
+        full_path_length = cumulative_distance + known_state_distances[old_map.state]
+        logger.info(f'found path of {full_path_length}')
 
         if not known_shortest or known_shortest > full_path_length:
             known_shortest = full_path_length
-            print(f'new {known_shortest=}')
+            logger.info(f'new {known_shortest=}')
 
         return known_state_distances[old_map.state]
 
@@ -170,7 +181,9 @@ def calc_fewest_steps_to_all_keys(old_map, cumulative_distance=0):
             continue
         map = deepcopy(old_map)
         map.process_move(move_to)
-        that_moves_fewest_steps = calc_fewest_steps_to_all_keys(map, cumulative_distance + step_distance)
+        that_moves_fewest_steps = calc_fewest_steps_to_all_keys(
+            map, cumulative_distance + step_distance
+        )
         if that_moves_fewest_steps == 'unknown':
             continue
         distances_by_move[move_to] = that_moves_fewest_steps + step_distance
@@ -194,4 +207,4 @@ if __name__ == '__main__':
     with open('data/input18.txt') as f:
         lines = [line.strip() for line in f.readlines()]
 
-    print(main(lines))  # 7806 too high...try 7698
+    logger.info(main(lines))  # 7698 too high
