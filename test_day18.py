@@ -1,7 +1,7 @@
 import unittest
 from unittest import TestCase
 
-from day18_1 import Map, calc_fewest_steps_to_all_keys, known_state_distances
+from day18_1 import Map, calc_fewest_steps_to_all_keys, known_state_distances, known_shortest
 
 MAP1_0 = [
     '#########',
@@ -34,6 +34,7 @@ MAP2_2 = [
 
 class TestMap(TestCase):
     def setUp(self):
+        global known_shortest
         self.map1_0 = Map(MAP1_0)
         self.map1_1 = Map(MAP1_1)
         self.map1_1.picked_up_keys.add('a')
@@ -45,6 +46,13 @@ class TestMap(TestCase):
         self.maps2_2_reachables.add((22, 2))
         for x in range(1, 23):
             self.maps2_2_reachables.add((x, 3))
+        known_shortest = 0
+        known_state_distances.clear()
+
+    def tearDown(self) -> None:
+        global known_shortest, known_state_distances
+        known_shortest = 0
+        known_state_distances.clear()
 
     @unittest.skip('I may not build out this function')
     def test_can_reach(self):
@@ -87,7 +95,11 @@ class TestMap(TestCase):
         self.assertEqual(self.map1_1.get_available_moves(), {(3, 1): 4})
         self.assertEqual(self.map2_2.get_available_moves(), {(21, 1): 10, (1, 3): 34})
 
-    def test_calc_fewest_steps_to_all_keys(self):
+    def test_calc_fewest_steps_to_all_keys_1(self):
+        # global known_shortest
         self.assertEqual(calc_fewest_steps_to_all_keys(self.map1_0), 8)
-        known_state_distances.clear()
+        # known_state_distances.clear()
+        # known_shortest = None
+
+    def test_calc_fewest_steps_to_all_keys_2(self):
         self.assertEqual(calc_fewest_steps_to_all_keys(self.map2_0), 86)
