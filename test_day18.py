@@ -1,7 +1,7 @@
 import unittest
 from unittest import TestCase
 
-from day18_1 import Map, calc_fewest_steps_to_all_keys
+from day18_1 import Map, calc_fewest_steps_to_all_keys, known_state_distances
 
 MAP1_0 = [
     '#########',
@@ -89,4 +89,5 @@ class TestMap(TestCase):
 
     def test_calc_fewest_steps_to_all_keys(self):
         self.assertEqual(calc_fewest_steps_to_all_keys(self.map1_0), 8)
+        known_state_distances.clear()
         self.assertEqual(calc_fewest_steps_to_all_keys(self.map2_0), 86)

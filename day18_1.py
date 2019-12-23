@@ -1,5 +1,10 @@
+import math
 from collections import defaultdict
 from copy import deepcopy
+
+
+# known_shortest = None
+known_state_distances = {}
 
 
 class Map(object):
@@ -37,6 +42,10 @@ class Map(object):
                     # self.door_adjacent[(loc[0]+1, loc[1])].add(c)
                     # self.door_adjacent[(loc[0], loc[1]-1)].add(c)
                     # self.door_adjacent[(loc[0], loc[1]+1)].add(c)
+
+    @property
+    def state(self):
+        return self.me, frozenset(self.keys.keys()), frozenset(self.doors.keys())
 
     def reachable(self):
         """do a depth-first walking search"""
@@ -88,14 +97,16 @@ class Map(object):
     def got_all_keys(self):
         return len(self.keys) == 0
 
-    def get_available_moves(self):
-        reachables = self.reachable()
+    def get_available_moves(self, reachables=None):
+        if not reachables:
+            reachables = self.reachable()
+
         answer = {}
         for k, v in self.reachable_keys(reachables).items():
             answer[v] = reachables[v]
 
         for k, v in self.reachable_unlockable_doors(reachables).items():
-            adjacent_spots = self.reachable_doors()[k]
+            adjacent_spots = self.reachable_doors(reachables)[k]
             answer[v] = min(reachables[spot] for spot in adjacent_spots) + 1
 
         return answer
@@ -121,27 +132,49 @@ class Map(object):
             self.pick_up_key()
         elif self.me in self.doors.values():
             self.unlock_door()
+        print(f'{len(self.keys)=}, {len(self.doors)=}')
 
 
-def calc_fewest_steps_to_all_keys(old_map):
-    moves = old_map.get_available_moves()
+def calc_fewest_steps_to_all_keys(old_map, cumulative_distance=0):
+    global known_state_distances
+    print(f'{cumulative_distance=}')
 
-    if not moves:
-        # must have all keys
+    if known_state_distances and cumulative_distance > min(known_state_distances.values()):
+        return math.inf
+
+    if old_map.got_all_keys:
+        print(f'found path of {cumulative_distance}')
         return 0
+
+    if old_map.state in known_state_distances:
+        print(f'found path of {cumulative_distance+known_state_distances[old_map.state]}')
+        return known_state_distances[old_map.state]
+
+    # # this is the timesaver supposedly breakpoint but it breaks the test so...
+    # if known_shortest and cumulative_distance > known_shortest:
+    #     return known_shortest + 1
+
+    reachables = old_map.reachable()
+    moves = old_map.get_available_moves(reachables)
 
     distances_by_move = {}
 
     for move_to, step_distance in moves.items():
         map = deepcopy(old_map)
         map.process_move(move_to)
-        distances_by_move[move_to] = step_distance + calc_fewest_steps_to_all_keys(map)
+        distances_by_move[move_to] = step_distance + calc_fewest_steps_to_all_keys(
+            map, cumulative_distance + step_distance
+        )
 
-    return min(distances_by_move.values())
+    fewest_steps_from_here = min(distances_by_move.values())
+    known_state_distances[map.state] = fewest_steps_from_here
+
+    return fewest_steps_from_here
 
 
 def main(lines):
     map = Map(lines)
+    known_state_distances.clear()
     return calc_fewest_steps_to_all_keys(map)
 
 
@@ -149,4 +182,4 @@ if __name__ == '__main__':
     with open('data/input18.txt') as f:
         lines = [line.strip() for line in f.readlines()]
 
-    print(main(lines))
+    print(main(lines))  # 7806 too high
