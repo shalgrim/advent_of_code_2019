@@ -48,38 +48,6 @@ class Map(object):
 
         return portals
 
-    @staticmethod
-    def find_known_label(lines, label):
-        for y, line in enumerate(lines):
-            if label in line:
-                # found a horizontal label
-                start_y = y
-                astart = line.index(label)
-                if astart==0:
-                    start_x = 2
-                elif astart == len(line) - 1:
-                    start_x = len(line) - 3
-                else:
-                    if line[astart-1] == '.':
-                        start_x = astart-1
-                    else:
-                        start_x = astart+2
-                break
-            elif label[0] in line:
-                # found a vertical label
-                start_x = line.find(label[0])
-                if y < 2:
-                    start_y = 2
-                elif y > len(lines) - 3:
-                    start_y = len(lines) - 3
-                else:
-                    if lines[y-1][start_x] == '.':
-                        start_y = y-1
-                    else:
-                        start_y = y + 2
-
-        return start_x, start_y
-
 
 if __name__ == '__main__':
     with open('data/test20_1.txt') as f:
