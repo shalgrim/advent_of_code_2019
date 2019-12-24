@@ -207,4 +207,5 @@ if __name__ == '__main__':
     with open('data/input18.txt') as f:
         lines = [line.strip() for line in f.readlines()]
 
-    logger.info(main(lines))  # 7698 too high
+    logger.info(main(lines))  # 7698 too high. other non-correct: 7678, 7624, 5942
+    # really tho this needs to be converted to a BFS
