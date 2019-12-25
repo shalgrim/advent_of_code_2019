@@ -146,6 +146,32 @@ class Map(object):
         logger.info(f'{len(self.keys)=}, {len(self.doors)=}')
 
 
+def generate_new_maps(old_map, incoming_distance):
+    new_maps = []
+    reachables = old_map.reachable()
+    moves = old_map.get_available_moves(reachables)
+    for move_to, step_distance in moves.items():
+        new_map = deepcopy(old_map)
+        new_map.process_move(move_to)
+        new_maps.append((new_map, incoming_distance + step_distance))
+    return new_maps
+
+
+def bfs(start_map):
+    maps = [(deepcopy(start_map), 0)]
+
+    while not any(mt[0].got_all_keys for mt in maps):
+        new_maps = []
+        for m, d in maps:
+            new_maps += generate_new_maps(m, d)
+
+        maps = new_maps
+
+    for m, d in maps:
+        if m.got_all_keys:
+            return d
+
+
 def calc_fewest_steps_to_all_keys(old_map, cumulative_distance=0):
     global known_state_distances, known_shortest
     if not cumulative_distance and known_shortest:

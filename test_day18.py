@@ -1,7 +1,13 @@
 import unittest
 from unittest import TestCase
 
-from day18_1 import Map, calc_fewest_steps_to_all_keys, known_state_distances, known_shortest
+from day18_1 import (
+    Map,
+    bfs,
+    calc_fewest_steps_to_all_keys,
+    known_shortest,
+    known_state_distances,
+)
 
 MAP1_0 = [
     '#########',
@@ -31,6 +37,35 @@ MAP2_2 = [
     '########################',
 ]
 
+MAP3_0 = [
+    '########################',
+    '#...............b.C.D.f#',
+    '#.######################',
+    '#.....@.a.B.c.d.A.e.F.g#',
+    '########################',
+]
+
+MAP4_0 = [
+    '#################',
+    '#i.G..c...e..H.p#',
+    '########.########',
+    '#j.A..b...f..D.o#',
+    '########@########',
+    '#k.E..a...g..B.n#',
+    '########.########',
+    '#l.F..d...h..C.m#',
+    '#################',
+]
+
+MAP5_0 = [
+    '########################',
+    '#@..............ac.GI.b#',
+    '###d#e#f################',
+    '###A#B#C################',
+    '###g#h#i################',
+    '########################',
+]
+
 
 class TestMap(TestCase):
     def setUp(self):
@@ -40,6 +75,9 @@ class TestMap(TestCase):
         self.map1_1.picked_up_keys.add('a')
         self.map2_0 = Map(MAP2_0)
         self.map2_2 = Map(MAP2_2)
+        self.map3_0 = Map(MAP3_0)
+        self.map4_0 = Map(MAP4_0)
+        self.map5_0 = Map(MAP5_0)
         self.maps2_2_reachables = set()
         for x in range(10, 23):
             self.maps2_2_reachables.add((x, 1))
@@ -96,10 +134,24 @@ class TestMap(TestCase):
         self.assertEqual(self.map2_2.get_available_moves(), {(21, 1): 10, (1, 3): 34})
 
     def test_calc_fewest_steps_to_all_keys_1(self):
-        # global known_shortest
         self.assertEqual(calc_fewest_steps_to_all_keys(self.map1_0), 8)
-        # known_state_distances.clear()
-        # known_shortest = None
+
+    def test_bfs(self):
+        self.assertEqual(bfs(self.map1_0), 8)
+        self.assertEqual(bfs(self.map2_0), 86)
+        self.assertEqual(bfs(self.map3_0), 132)
+        # self.assertEqual(bfs(self.map4_0), 136)
+        # self.assertEqual(bfs(self.map5_0), 81)
 
     def test_calc_fewest_steps_to_all_keys_2(self):
         self.assertEqual(calc_fewest_steps_to_all_keys(self.map2_0), 86)
+
+    def test_calc_fewest_steps_to_all_keys_3_5(self):
+        self.assertEqual(calc_fewest_steps_to_all_keys(self.map3_0), 132)
+        self.assertEqual(calc_fewest_steps_to_all_keys(self.map5_0), 81)
+
+    @unittest.skip('takes too long')
+    def test_calc_fewest_steps_to_all_keys_4_longrunning(
+        self,
+    ):  # this test may have revealed a termination problem
+        self.assertEqual(calc_fewest_steps_to_all_keys(self.map4_0), 136)
