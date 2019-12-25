@@ -127,4 +127,4 @@ if __name__ == '__main__':
         map.calc_all_distances()  # max recursion depth?
     except Exception:
         pass
-    print(map.distances[map.end])  # 580 is correct
+    print(map.distances[map.end])  # 580 is correct...I got lucky
