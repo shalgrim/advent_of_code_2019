@@ -143,7 +143,7 @@ class Map(object):
             self.pick_up_key()
         elif self.me in self.doors.values():
             self.unlock_door()
-        logger.info(f'{len(self.keys)=}, {len(self.doors)=}')
+        # logger.info(f'{len(self.keys)=}, {len(self.doors)=}')
 
 
 def generate_new_maps(old_map, incoming_distance):
@@ -157,19 +157,38 @@ def generate_new_maps(old_map, incoming_distance):
     return new_maps
 
 
+def reduce_maps(maps):
+    rv = []
+    seen_states = set()
+    for m, d in maps:
+        if m.state in seen_states:
+            continue
+        seen_states.add(m.state)
+        rv.append((m, d))
+
+    return rv
+
+
 def bfs(start_map):
     maps = [(deepcopy(start_map), 0)]
+    i = 0
 
     while not any(mt[0].got_all_keys for mt in maps):
+        i += 1
+        logger.info(
+            f'going around while {i}th time: {len(maps)} maps, {len(maps[0][0].keys) + len(maps[0][0].doors)} keys and doors'
+        )
         new_maps = []
         for m, d in maps:
             new_maps += generate_new_maps(m, d)
 
-        maps = new_maps
+        maps = reduce_maps(new_maps)
 
-    for m, d in maps:
-        if m.got_all_keys:
-            return d
+    return min([d for m, d in maps if m.got_all_keys])
+    # for m, d in maps:
+    #
+    #     if m.got_all_keys:
+    #         return d
 
 
 def calc_fewest_steps_to_all_keys(old_map, cumulative_distance=0):
@@ -233,5 +252,7 @@ if __name__ == '__main__':
     with open('data/input18.txt') as f:
         lines = [line.strip() for line in f.readlines()]
 
-    logger.info(main(lines))  # 7698 too high. other non-correct: 7678, 7624, 5942
+    # logger.info(main(lines))  # 7698 too high. other non-correct: 7678, 7624, 5942
     # really tho this needs to be converted to a BFS
+    map = Map(lines)
+    print(bfs(map))

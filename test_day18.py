@@ -140,7 +140,9 @@ class TestMap(TestCase):
         self.assertEqual(bfs(self.map1_0), 8)
         self.assertEqual(bfs(self.map2_0), 86)
         self.assertEqual(bfs(self.map3_0), 132)
-        # self.assertEqual(bfs(self.map4_0), 136)
+
+    def test_bfs_long_running(self):
+        self.assertEqual(bfs(self.map4_0), 136)
         # self.assertEqual(bfs(self.map5_0), 81)
 
     def test_calc_fewest_steps_to_all_keys_2(self):
@@ -153,5 +155,5 @@ class TestMap(TestCase):
     @unittest.skip('takes too long')
     def test_calc_fewest_steps_to_all_keys_4_longrunning(
         self,
-    ):  # this test may have revealed a termination problem
+    ):  # this test may have revealed a termination problem...or not, bfs giving me same problem
         self.assertEqual(calc_fewest_steps_to_all_keys(self.map4_0), 136)
