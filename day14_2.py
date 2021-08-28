@@ -1,7 +1,7 @@
 from day14_1 import Rule
 
-resources = {'ORE': 1_000_000_000_000}
-
+# resources = {'ORE': 1_000_000_000_000}
+resrouces = {'ORE': 13_312}
 
 def find_missing_ingredient(rule):
     global resources
@@ -17,6 +17,7 @@ def produce_max_fuel(output_ingredient, rules):  #, ore_requirement):
 
     if output_ingredient == 'ORE':
         print("can't produce ore")
+        print(f'{resources=}')
         return
 
     output_rule = rules[output_ingredient]
@@ -38,11 +39,12 @@ def produce_max_fuel(output_ingredient, rules):  #, ore_requirement):
                 return
 
     print("exited while loop...can't produce ore")
+    print(f'{resources=}')
 
 
 def main(lines):  # , ore_requirement):
     global resources
-    resources = {'ORE': 1_000_000_000_000}  # set here so that tests reset
+    resources = {'ORE': 13_312}  # set here so that tests reset
     rules = [Rule(line) for line in lines]
     rules = {rule.output: rule for rule in rules}
     produce_max_fuel('FUEL', rules)  # , ore_requirement)
