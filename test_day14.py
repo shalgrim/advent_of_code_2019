@@ -65,6 +65,13 @@ class TestDay14(TestCase):
         resources['ORE'] = 13_312
         self.assertEqual(main2(lines, resources), 1)
 
+        # w case for v3 ...
+        with open('data/test14_3.txt') as f:
+            lines = [line.strip() for line in f.readlines()]
+        resources = defaultdict(lambda: 0)
+        resources['ORE'] = 13_312 * 2
+        self.assertEqual(main2(lines, resources), 2)
+
         # max case for v3 ... takes a long time
         # resources = defaultdict(lambda: 0)  # because resources will get mutated
         # resources['ORE'] = 1_000_000_000

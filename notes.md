@@ -4,9 +4,7 @@
 
 ### Part 2
 
-I've set up part 2 main to run the first example where they give the answer. (It's hard to do via tests the way I've got it since I'm using that global `resources`.)
-
-The current problem is that it gets to a point where the missing resources is ORE so it gets into an infinite loop tries to produce QVSV, and in doing so tries to produce ORE, so it gives up, but still needs to produce QVSV...
+The base case (where max == 1) tests all pass...but the one trillion ORE examples don't. Almost certainly need to do something with knowing what leftovers there are after producing 1 FUEL and slurping those up and seeing where it goes
 
 ## Day 18
 
