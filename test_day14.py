@@ -57,28 +57,39 @@ class TestDay14(TestCase):
         self.assertEqual(main(lines), 2210736)
 
     def test_main_part_2(self):
+
+        # 1 case for v3 passes
         with open('data/test14_3.txt') as f:
             lines = [line.strip() for line in f.readlines()]
         resources = defaultdict(lambda: 0)
         resources['ORE'] = 13_312
         self.assertEqual(main2(lines, resources), 1)
 
-        # max case for v3 fails
+        # max case for v3 ... takes a long time
         # resources = defaultdict(lambda: 0)  # because resources will get mutated
         # resources['ORE'] = 1_000_000_000
         # self.assertEqual(main2(lines, resources), 82_892_753)
 
-        # 1 case for v4 fails
-        # with open('data/test14_4.txt') as f:
-        #     lines = [line.strip() for line in f.readlines()]
-        # resources = defaultdict(lambda: 0)
-        # resources['ORE'] = 180_697
-        # self.assertEqual(main2(lines, resources), 1)
+        # 1 case for v4 passes
+        with open('data/test14_4.txt') as f:
+            lines = [line.strip() for line in f.readlines()]
+        resources = defaultdict(lambda: 0)
+        resources['ORE'] = 180_697
+        self.assertEqual(main2(lines, resources), 1)
 
-        # with open('data/test14_4.txt') as f:
-        #     lines = [line.strip() for line in f.readlines()]
+        # max case for v4
+        # resources = defaultdict(lambda: 0)  # because resources will get mutated
+        # resources['ORE'] = 1_000_000_000
         # self.assertEqual(main2(lines, 180697), 5586022)
 
-        # with open('data/test14_5.txt') as f:
-        #     lines = [line.strip() for line in f.readlines()]
+        # 1 case for v5 passes
+        with open('data/test14_5.txt') as f:
+            lines = [line.strip() for line in f.readlines()]
+        resources = defaultdict(lambda: 0)
+        resources['ORE'] = 2_210_736
+        self.assertEqual(main2(lines, resources), 1)
+
+        # max case for v5
+        # resources = defaultdict(lambda: 0)  # because resources will get mutated
+        # resources['ORE'] = 1_000_000_000
         # self.assertEqual(main2(lines, 460664))

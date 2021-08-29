@@ -61,6 +61,8 @@ def produce_max_ingredient(output_ingredient, rules, resources):
 
 
 def main(lines, resources):
+    global out_of_ore_sentinel
+    out_of_ore_sentinel = False
     rules = [Rule(line) for line in lines]
     rules = {rule.output: rule for rule in rules}
     resources = produce_max_ingredient('FUEL', rules, resources)
