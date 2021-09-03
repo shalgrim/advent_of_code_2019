@@ -4,7 +4,21 @@
 
 ### Part 2
 
-The base case (where max == 1) tests all pass...but the one trillion ORE examples don't. Almost certainly need to do something with knowing what leftovers there are after producing 1 FUEL and slurping those up and seeing where it goes
+The base case (where max == 1) tests all pass...but the one trillion ORE examples don't. Almost certainly need to do something with knowing what leftovers there are after producing 1 FUEL and slurping those up and seeing where it goes.
+
+Or, why wouldn't it work to, instead of producing max when you need an ingredient, producing _enough_?
+
+Okay, so I think the way to go about it is:
+
+1. Determine amount of ORE to produce 1 FUEL _plus_ leftovers
+2. Get a baseline where we produce FUEL = 1_000_000_000_000 // that_minimum
+3. Multiply the leftovers by the amount of FUEL produced by #2
+4. To those leftovers, make sure you add in 1_000_000_000_000 % that_minimum
+5. Then brute force it given those leftovers
+
+~So the First thing I have to do is write code I can import that will give me #1 in that list. Unfortunately, what I have got written uses global variables so I'll have to make new stuff that uses the algorithm but not variables and take it from there. Maybe a class.~
+
+This approach did not work as I have it in `main_smarter`. I believe it was too naive in depleting all the ore right away
 
 ## Day 18
 

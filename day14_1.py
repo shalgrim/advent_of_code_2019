@@ -1,3 +1,6 @@
+from fuel_builder import FuelBuilder
+
+
 class Rule(object):
     def __init__(self, line):
         lhs, rhs = line.split('=>')
@@ -16,7 +19,7 @@ class Rule(object):
 
 
 def does_produce(a, b, rules):
-    """True if a produces b"""
+    """True if a produces b eventually"""
     if b not in rules:
         return False
 
@@ -40,7 +43,7 @@ def find_missing_ingredient(rule):
 
 
 def get_required(input_ingredient, output_ingredient, rules):
-    global num_inputs_produced, resources
+    global resources, num_inputs_produced
     output_rule = rules[output_ingredient]
 
     missing_ingredient = find_missing_ingredient(output_rule)
@@ -64,18 +67,26 @@ def get_required(input_ingredient, output_ingredient, rules):
 
 
 def main(lines, input_ingredient='ORE', outupt_ingredient = 'FUEL'):
-    global num_inputs_produced, resources
+    global resources, num_inputs_produced
     resources = {}
     num_inputs_produced = 0
     rules = [Rule(line) for line in lines]
     rules = {rule.output: rule for rule in rules}
     get_required('ORE', 'FUEL',  rules)
-    return num_inputs_produced
+    return num_inputs_produced, resources
+
+
+def main_using_class(lines):
+    rules = [Rule(line) for line in lines]
+    rules = {rule.output: rule for rule in rules}
+    fb = FuelBuilder(rules)
+    min_to_produce_one, leftovers = fb.calc_min_to_produce_one()
+    return min_to_produce_one
 
 
 if __name__ == '__main__':
     with open('data/input14.txt') as f:
         lines = [line.strip() for line in f.readlines()]
 
-    print(main(lines))  # 870051
+    print(main(lines)[0])  # 870051
     print(resources)

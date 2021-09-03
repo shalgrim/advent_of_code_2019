@@ -1,8 +1,8 @@
 from collections import defaultdict
 from unittest import TestCase
 
-from day14_1 import Rule, main, get_required, does_produce
-from day14_2 import main as main2
+from day14_1 import Rule, main, get_required, does_produce, main_using_class
+from day14_2 import main_brute_force as main2_brute_force, main_smarter
 
 
 class TestDay14(TestCase):
@@ -42,51 +42,69 @@ class TestDay14(TestCase):
     def test_main_part_1(self):
         with open('data/test14_1.txt') as f:
             lines = [line.strip() for line in f.readlines()]
-        self.assertEqual(main(lines), 31)
+        self.assertEqual(main(lines)[0], 31)
         with open('data/test14_2.txt') as f:
             lines = [line.strip() for line in f.readlines()]
-        self.assertEqual(main(lines), 165)
+        self.assertEqual(main(lines)[0], 165)
         with open('data/test14_3.txt') as f:
             lines = [line.strip() for line in f.readlines()]
-        self.assertEqual(main(lines), 13312)
+        self.assertEqual(main(lines)[0], 13312)
         with open('data/test14_4.txt') as f:
             lines = [line.strip() for line in f.readlines()]
-        self.assertEqual(main(lines), 180697)
+        self.assertEqual(main(lines)[0], 180697)
         with open('data/test14_5.txt') as f:
             lines = [line.strip() for line in f.readlines()]
-        self.assertEqual(main(lines), 2210736)
+        self.assertEqual(main(lines)[0], 2210736)
+
+    def test_main_part_1_using_class(self):
+        with open('data/test14_1.txt') as f:
+            lines = [line.strip() for line in f.readlines()]
+        self.assertEqual(main_using_class(lines), 31)
+        with open('data/test14_2.txt') as f:
+            lines = [line.strip() for line in f.readlines()]
+        self.assertEqual(main_using_class(lines), 165)
+        with open('data/test14_3.txt') as f:
+            lines = [line.strip() for line in f.readlines()]
+        self.assertEqual(main_using_class(lines), 13312)
+        with open('data/test14_4.txt') as f:
+            lines = [line.strip() for line in f.readlines()]
+        self.assertEqual(main_using_class(lines), 180697)
+        with open('data/test14_5.txt') as f:
+            lines = [line.strip() for line in f.readlines()]
+        self.assertEqual(main_using_class(lines), 2210736)
 
     def test_main_part_2(self):
 
-        # 1 case for v3 passes
+        # 1 case for v3 passes brute force
         with open('data/test14_3.txt') as f:
             lines = [line.strip() for line in f.readlines()]
         resources = defaultdict(lambda: 0)
         resources['ORE'] = 13_312
-        self.assertEqual(main2(lines, resources), 1)
+        self.assertEqual(main2_brute_force(lines, resources), 1)
 
-        # w case for v3 ...
-        with open('data/test14_3.txt') as f:
-            lines = [line.strip() for line in f.readlines()]
+        # 2 case for v3 passes brute force
         resources = defaultdict(lambda: 0)
         resources['ORE'] = 13_312 * 2
-        self.assertEqual(main2(lines, resources), 2)
+        self.assertEqual(main2_brute_force(lines, resources), 2)
+
+        # max case for v3 smarter...unknown
+        self.assertEqual(main_smarter(lines), 82_892_753)
 
         # max case for v3 ... takes a long time
-        # resources = defaultdict(lambda: 0)  # because resources will get mutated
-        # resources['ORE'] = 1_000_000_000
-        # self.assertEqual(main2(lines, resources), 82_892_753)
+        # resources = defaultdict(lambda: 0)
+        # resources['ORE'] = 1_000_000_000_000
+        # self.assertEqual(main2_brute_force(lines, resources), 82_892_753)
 
         # 1 case for v4 passes
         with open('data/test14_4.txt') as f:
             lines = [line.strip() for line in f.readlines()]
         resources = defaultdict(lambda: 0)
         resources['ORE'] = 180_697
-        self.assertEqual(main2(lines, resources), 1)
+        self.assertEqual(main2_brute_force(lines, resources), 1)
 
         # max case for v4
         # resources = defaultdict(lambda: 0)  # because resources will get mutated
-        # resources['ORE'] = 1_000_000_000
+        # resources['ORE'] = 1_000_000_000_000
         # self.assertEqual(main2(lines, 180697), 5586022)
 
         # 1 case for v5 passes
@@ -94,9 +112,9 @@ class TestDay14(TestCase):
             lines = [line.strip() for line in f.readlines()]
         resources = defaultdict(lambda: 0)
         resources['ORE'] = 2_210_736
-        self.assertEqual(main2(lines, resources), 1)
+        self.assertEqual(main2_brute_force(lines, resources), 1)
 
         # max case for v5
         # resources = defaultdict(lambda: 0)  # because resources will get mutated
-        # resources['ORE'] = 1_000_000_000
+        # resources['ORE'] = 1_000_000_000_000
         # self.assertEqual(main2(lines, 460664))
