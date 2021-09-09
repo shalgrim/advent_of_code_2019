@@ -1,4 +1,6 @@
+import time
 from collections import defaultdict
+from datetime import datetime
 
 from day14_1 import Rule, get_required
 from fuel_builder import FuelBuilder, MaxIngredientBuilder, can_produce
@@ -6,6 +8,7 @@ from fuel_builder import FuelBuilder, MaxIngredientBuilder, can_produce
 ONE_TRILLION = 1_000_000_000_000
 
 out_of_ore_sentinel = False
+start_time = time.time()
 
 
 def find_short_ingredient(rule, resources):
@@ -39,6 +42,7 @@ def produce_ingredient(ingredient, rules, resources):
 
 
 def produce_max_ingredient(output_ingredient, rules, resources):
+    global start_time
     if output_ingredient == 'ORE':
         raise Exception('should never try to produce max ORE')
 
@@ -51,8 +55,15 @@ def produce_max_ingredient(output_ingredient, rules, resources):
             resources = produce_ingredient(short_ingredient, rules, resources)
         else:
             resources[output_ingredient] += output_rule.num_produced
-            if output_ingredient == 'FUEL' and resources['FUEL'] % 100_000 == 0:
-                print(f'{resources["FUEL"]=}')
+            if output_ingredient == 'FUEL' and resources['FUEL'] % 1_000 == 0:
+                print(f'current time: {datetime.now().time()}')
+                elapsed_time = int(time.time() - start_time)
+                m, s = divmod(elapsed_time, 60)
+                h, m = divmod(m, 60)
+                elapsed_time = f'{h}:{m:02}:{s:02}'
+                print(f'{elapsed_time=}')
+                fuel_produced = resources['FUEL']
+                print(f'FUEL: {fuel_produced:,}')
             for ing, num in output_rule.lhs.items():
                 resources[ing] -= num
 
@@ -60,6 +71,8 @@ def produce_max_ingredient(output_ingredient, rules, resources):
 
 
 def main_brute_force(lines, resources=None):
+    global start_time
+    start_time = time.time()
     global out_of_ore_sentinel
     out_of_ore_sentinel = False
     if resources is None:
@@ -100,20 +113,14 @@ def get_required_proper(input_ingredient, output_ingredient, rules, resources=No
 
 
 def main_smarter(lines):
+    """I think at this point this algorithm is basically the same as brute force just in a class"""
     rules = [Rule(line) for line in lines]
     rules = {rule.output: rule for rule in rules}
-    fb = FuelBuilder(rules)
-    min_to_produce_one, leftovers = fb.calc_min_to_produce_one()
-
-    num_output_easy = ONE_TRILLION // min_to_produce_one
-    leftovers['FUEL'] = 0
-    all_leftovers = multiply_leftovers(leftovers, num_output_easy)
-    all_leftovers['ORE'] = ONE_TRILLION - min_to_produce_one * num_output_easy
-    # extra_resources = produce_max_ingredient('FUEL', rules, all_leftovers)  # doesn't seem to work
-
-    mb = MaxIngredientBuilder(rules, all_leftovers)
+    resources = defaultdict(lambda: 0)
+    resources['ORE'] = ONE_TRILLION
+    mb = MaxIngredientBuilder(rules, resources)
     mb.produce_max('FUEL')
-    return num_output_easy + mb.resources['FUEL']
+    return mb.resources['FUEL']
     # return num_output_easy + extra_resources['FUEL']
 
 
@@ -121,4 +128,4 @@ if __name__ == '__main__':
     with open('data/input14.txt') as f:
         lines = [line.strip() for line in f.readlines()]
 
-    print(main_smarter(lines, 870_015))
+    print(main_brute_force(lines))

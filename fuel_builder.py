@@ -1,3 +1,7 @@
+import time
+from datetime import datetime
+
+
 def can_produce(rule, resources):
     for ing, num in rule.lhs.items():
         if resources[ing] < num:
@@ -32,7 +36,9 @@ class FuelBuilder(BuilderUtils):
         while missing_ingredient:
             if missing_ingredient == input_ingredient:
                 total_needed = output_rule.lhs[missing_ingredient]
-                new_inputs_needed = output_rule.lhs[input_ingredient] - self.resources.get(input_ingredient, 0)
+                new_inputs_needed = output_rule.lhs[
+                    input_ingredient
+                ] - self.resources.get(input_ingredient, 0)
                 self.resources[input_ingredient] = total_needed
                 self.num_inputs_produced += new_inputs_needed
             else:
@@ -54,6 +60,14 @@ class MaxIngredientBuilder(BuilderUtils):
     def __init__(self, rules, initial_resources=None):
         super().__init__(rules, initial_resources)
         self.short_on_ore = False
+        self.start_time = time.time()
+
+    @property
+    def elapsed_time(self):
+        elapsed_time = int(time.time() - self.start_time)
+        m, s = divmod(elapsed_time, 60)
+        h, m = divmod(m, 60)
+        return f'{h}:{m:02}:{s:02}'
 
     def produce_ingredient(self, ingredient):
         rule = self.rules[ingredient]
@@ -80,5 +94,15 @@ class MaxIngredientBuilder(BuilderUtils):
                 self.produce_ingredient(short_ingredient)
             else:
                 self.resources[output_ingredient] += output_rule.num_produced
+                if (
+                    self.resources[output_ingredient] % 200_000 == 0
+                    or self.resources[output_ingredient] > 82_000_000
+                ):
+                    print(f'current time: {datetime.now().time()}')
+                    print(f'elapsed time: {self.elapsed_time}')
+                    print(
+                        f'self.resources[output_ingredient]={self.resources[output_ingredient]:,}'
+                    )
+                    print(f'self.resources["ORE"]={self.resources["ORE"]:,}')
                 for ing, num in output_rule.lhs.items():
                     self.resources[ing] -= num
