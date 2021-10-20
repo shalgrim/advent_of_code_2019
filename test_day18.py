@@ -140,10 +140,11 @@ class TestMap(TestCase):
         self.assertEqual(bfs(self.map1_0), 8)
         self.assertEqual(bfs(self.map2_0), 86)
         self.assertEqual(bfs(self.map3_0), 132)
+        self.assertEqual(bfs(self.map5_0), 81)
 
+    @unittest.skip('takes 22m 24s but passes')
     def test_bfs_long_running(self):
         self.assertEqual(bfs(self.map4_0), 136)
-        # self.assertEqual(bfs(self.map5_0), 81)
 
     def test_calc_fewest_steps_to_all_keys_2(self):
         self.assertEqual(calc_fewest_steps_to_all_keys(self.map2_0), 86)

@@ -158,15 +158,15 @@ def generate_new_maps(old_map, incoming_distance):
 
 
 def reduce_maps(maps):
-    rv = []
-    seen_states = set()
+    seen_states = {}
     for m, d in maps:
         if m.state in seen_states:
-            continue
-        seen_states.add(m.state)
-        rv.append((m, d))
+            if d < seen_states[m.state][1]:
+                seen_states[m.state] = (m, d)
+        else:
+            seen_states[m.state] = (m, d)
 
-    return rv
+    return list(seen_states.values())
 
 
 def bfs(start_map):
@@ -175,6 +175,8 @@ def bfs(start_map):
 
     while not any(mt[0].got_all_keys for mt in maps):
         i += 1
+        # something seems wrong about this logging because the keys and doors is always just going down by one but shouldn't it be by two?
+        # so either I'm doing bookkeeping wrong in a way that won't affect the outcome or it's a bug
         logger.info(
             f'going around while {i}th time: {len(maps)} maps, {len(maps[0][0].keys) + len(maps[0][0].doors)} keys and doors'
         )
