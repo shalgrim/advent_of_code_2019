@@ -130,9 +130,9 @@ class TestMap(TestCase):
 
     def test_get_available_moves(self):
         self.assertEqual(self.map1_0.get_available_moves(), {(7, 1): 2})
-        self.assertEqual(self.map1_1.get_available_moves(), {(3, 1): 4})
         self.assertEqual(self.map2_2.get_available_moves(), {(21, 1): 10, (1, 3): 34})
 
+    @unittest.skip("Not using this approach anymore; prefer bfs for now")
     def test_calc_fewest_steps_to_all_keys_1(self):
         self.assertEqual(calc_fewest_steps_to_all_keys(self.map1_0), 8)
 
@@ -142,13 +142,15 @@ class TestMap(TestCase):
         self.assertEqual(bfs(self.map3_0), 132)
         self.assertEqual(bfs(self.map5_0), 81)
 
-    @unittest.skip('takes 22m 24s but passes')
+    # @unittest.skip('takes 22m 24s with old algorithm but 1m 31s with new algo')
     def test_bfs_long_running(self):
         self.assertEqual(bfs(self.map4_0), 136)
 
+    @unittest.skip("Not using this approach anymore; prefer bfs for now")
     def test_calc_fewest_steps_to_all_keys_2(self):
         self.assertEqual(calc_fewest_steps_to_all_keys(self.map2_0), 86)
 
+    @unittest.skip("Not using this approach anymore; prefer bfs for now")
     def test_calc_fewest_steps_to_all_keys_3_5(self):
         self.assertEqual(calc_fewest_steps_to_all_keys(self.map3_0), 132)
         self.assertEqual(calc_fewest_steps_to_all_keys(self.map5_0), 81)

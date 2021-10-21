@@ -113,19 +113,13 @@ class Map(object):
         return len(self.keys) == 0
 
     def get_available_moves(self, reachables=None):
+        """Returns dict of key letters as keys and distance to them as values"""
         if not reachables:
             reachables = self.reachable()
 
         answer = {}
         for k, v in self.reachable_keys(reachables).items():
             answer[v] = reachables[v]
-
-        # answer currently is key letters as keys and distance to them as values
-
-        # I think this is wholly unnecessary as we should just remove doors when we pick up a key
-        for k, v in self.reachable_unlockable_doors(reachables).items():
-            adjacent_spots = self.reachable_doors(reachables)[k]
-            answer[v] = min(reachables[spot] for spot in adjacent_spots) + 1
 
         return answer
 
@@ -135,14 +129,8 @@ class Map(object):
                 break
         self.picked_up_keys.add(k)
         del self.keys[k]
-        del self.doors[k.upper()]
-
-    def unlock_door(self):
-        """I think this is unnecessary now"""
-        for k, v in self.doors.items():
-            if self.me == v:
-                break
-        del self.doors[k]
+        if k.upper() in self.doors:  # not all examples have the last door
+            del self.doors[k.upper()]
 
     def process_move(self, move_to):
         self.me = move_to
@@ -151,7 +139,6 @@ class Map(object):
         elif self.me in self.doors.values():
             print("Shouldn't be here")
             self.unlock_door()
-        # logger.info(f'{len(self.keys)=}, {len(self.doors)=}')
 
 
 def generate_new_maps(old_map, incoming_distance):
@@ -183,8 +170,6 @@ def bfs(start_map):
 
     while not any(mt[0].got_all_keys for mt in maps):
         i += 1
-        # something seems wrong about this logging because the keys and doors is always just going down by one but shouldn't it be by two?
-        # so either I'm doing bookkeeping wrong in a way that won't affect the outcome or it's a bug
         logger.info(
             f'going around while {i}th time: {len(maps)} maps, {len(maps[0][0].keys) + len(maps[0][0].doors)} keys and doors'
         )
