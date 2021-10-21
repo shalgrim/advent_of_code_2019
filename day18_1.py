@@ -2,6 +2,7 @@ import logging
 import sys
 from collections import defaultdict
 from copy import deepcopy
+from datetime import datetime
 from logging import StreamHandler
 
 logger = logging.getLogger('advent_of_code_2019.day18_1')
@@ -171,7 +172,7 @@ def bfs(start_map):
     while not any(mt[0].got_all_keys for mt in maps):
         i += 1
         logger.info(
-            f'going around while {i}th time: {len(maps)} maps, {len(maps[0][0].keys) + len(maps[0][0].doors)} keys and doors'
+            f'{datetime.utcnow(): %Y-%m-%d %H:%M:%S} going around while {i}th time: {len(maps)} maps, {len(maps[0][0].keys) + len(maps[0][0].doors)} keys and doors'
         )
         new_maps = []
         for map, distance in maps:
