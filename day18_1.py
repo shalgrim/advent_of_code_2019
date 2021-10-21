@@ -59,7 +59,10 @@ class Map(object):
         return self.me, frozenset(self.keys.keys()), frozenset(self.doors.keys())
 
     def reachable(self):
-        """do a depth-first walking search"""
+        """
+        do a depth-first walking search
+        returns dict of all reachable locations as keys and minimum distance to reach each as values
+        """
         reachable = {self.me: 0}
         return self._reachable(self.me, reachable, 1)
 
@@ -81,6 +84,7 @@ class Map(object):
         return reachable
 
     def reachable_keys(self, reachables=None):
+        """Returns dict of key letters as keys and their locations as values if they're reachable"""
         if reachables is None:
             reachables = self.reachable()
 
@@ -116,6 +120,9 @@ class Map(object):
         for k, v in self.reachable_keys(reachables).items():
             answer[v] = reachables[v]
 
+        # answer currently is key letters as keys and distance to them as values
+
+        # I think this is wholly unnecessary as we should just remove doors when we pick up a key
         for k, v in self.reachable_unlockable_doors(reachables).items():
             adjacent_spots = self.reachable_doors(reachables)[k]
             answer[v] = min(reachables[spot] for spot in adjacent_spots) + 1
@@ -128,20 +135,21 @@ class Map(object):
                 break
         self.picked_up_keys.add(k)
         del self.keys[k]
-        # print(f'picked up key {k}')
+        del self.doors[k.upper()]
 
     def unlock_door(self):
+        """I think this is unnecessary now"""
         for k, v in self.doors.items():
             if self.me == v:
                 break
         del self.doors[k]
-        # print(f'unlocked door {k}')
 
     def process_move(self, move_to):
         self.me = move_to
         if self.me in self.keys.values():
             self.pick_up_key()
         elif self.me in self.doors.values():
+            print("Shouldn't be here")
             self.unlock_door()
         # logger.info(f'{len(self.keys)=}, {len(self.doors)=}')
 
@@ -181,8 +189,8 @@ def bfs(start_map):
             f'going around while {i}th time: {len(maps)} maps, {len(maps[0][0].keys) + len(maps[0][0].doors)} keys and doors'
         )
         new_maps = []
-        for m, d in maps:
-            new_maps += generate_new_maps(m, d)
+        for map, distance in maps:
+            new_maps += generate_new_maps(map, distance)
 
         maps = reduce_maps(new_maps)
 
